@@ -1,66 +1,153 @@
 <!DOCTYPE html>
-<html lang="en" class="dark-mode">
-
+<html lang="en" class="dark-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greekonomics</title>
     <link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg">
     <link rel="alternate icon" type="image/png" href="/assets/favicon/favicon.png">
-    <title>Greekonomics - Financial Education Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=GT+Alpina:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <header class="site-header home-header">
+        <div class="container header-container">
+            <div class="header-left">
+                <a href="/" class="logo">
+                    <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 3V21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M7 14L12 9L16 13L21 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Greekonomics
+                </a>
+            </div>
+            <div class="header-right">
+                <div class="search-wrapper">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="search-input" placeholder="Search Greekonomics">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="categories-nav">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="bi bi-graph-up-arrow"></i> Greekonomics</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about.html">About</a>
-                    </li>
-                </ul>
+            <div class="categories-wrapper">
+                <button class="nav-btn prev-btn" aria-label="Previous categories">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <div class="categories-scroll">
+                    <button class="category-tab active" data-category="all">All</button>
+                    <button class="category-tab" data-category="investing">Investing</button>
+                    <button class="category-tab" data-category="crypto">Crypto</button>
+                    <button class="category-tab" data-category="personal-finance">Personal Finance</button>
+                </div>
+                <button class="nav-btn next-btn" aria-label="Next categories">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
             </div>
         </div>
     </nav>
 
     <main class="container">
-        <div class="search-section">
-            <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search articles...">
-                <i class="bi bi-search search-icon"></i>
-            </div>
-            <div class="popular-tags" id="tagContainer">
-                <span class="tag active" data-tag="all">All</span>
-                <span class="tag" data-tag="investing">#investing</span>
-                <span class="tag" data-tag="budgeting">#budgeting</span>
-                <span class="tag" data-tag="crypto">#crypto</span>
-                <span class="tag" data-tag="stocks">#stocks</span>
-                <span class="tag" data-tag="personal-finance">#personal-finance</span>
-            </div>
-        </div>
+        <div class="posts-grid">
+            <article class="post-card" data-category="investing">
+                <a href="articles/getting-started-with-stock-market-investing.html" class="post-link">
+                    <div class="post-content">
+                        <div class="post-text">
+                            <h2>Getting Started with Stock Market Investing</h2>
+                            <p class="post-subtitle">Learn the fundamentals of stock market investing and how to build a diversified portfolio for long-term growth.</p>
+                            <div class="post-meta">
+                                <span class="post-date">Jan 2, 2025</span>
+                            </div>
+                        </div>
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1000&q=80" alt="Stock market chart">
+                        </div>
+                    </div>
+                </a>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" aria-label="Like post">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                    <button class="action-btn copy-btn" aria-label="Copy link">
+                        <i class="bi bi-link-45deg"></i>
+                    </button>
+                </div>
+            </article>
 
-        <div class="blog-grid" id="blogGrid">
-            <!-- Blog posts will be dynamically inserted here -->
+            <article class="post-card" data-category="crypto">
+                <a href="articles/cryptocurrency-understanding-the-basics.html" class="post-link">
+                    <div class="post-content">
+                        <div class="post-text">
+                            <h2>Cryptocurrency: Understanding the Basics</h2>
+                            <p class="post-subtitle">A comprehensive guide to understanding cryptocurrency, blockchain technology, and how to safely invest in digital assets.</p>
+                            <div class="post-meta">
+                                <span class="post-date">Jan 2, 2025</span>
+                            </div>
+                        </div>
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=1000&q=80" alt="Bitcoin on chart background">
+                        </div>
+                    </div>
+                </a>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" aria-label="Like post">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                    <button class="action-btn copy-btn" aria-label="Copy link">
+                        <i class="bi bi-link-45deg"></i>
+                    </button>
+                </div>
+            </article>
+
+            <article class="post-card" data-category="personal-finance">
+                <a href="articles/creating-a-monthly-budget-that-works.html" class="post-link">
+                    <div class="post-content">
+                        <div class="post-text">
+                            <h2>Creating a Monthly Budget That Works</h2>
+                            <p class="post-subtitle">Practical tips and strategies for creating and sticking to a monthly budget that helps you achieve your financial goals.</p>
+                            <div class="post-meta">
+                                <span class="post-date">Jan 2, 2025</span>
+                            </div>
+                        </div>
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1000&q=80" alt="Budget planning">
+                        </div>
+                    </div>
+                </a>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" aria-label="Like post">
+                        <i class="bi bi-heart"></i>
+                    </button>
+                    <button class="action-btn copy-btn" aria-label="Copy link">
+                        <i class="bi bi-link-45deg"></i>
+                    </button>
+                </div>
+            </article>
         </div>
     </main>
 
-    <footer>
-        <div class="container text-center py-4">
+    <div class="toast-container">
+        <div class="toast" role="alert" aria-live="polite">
+            <div class="toast-content">
+                <i class="bi bi-link-45deg"></i>
+                <span>Copied link to clipboard</span>
+            </div>
+            <button class="toast-close" aria-label="Close notification">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
             <p>&copy; 2025 Greekonomics. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/scripts.js"></script>
 </body>
-
 </html>
