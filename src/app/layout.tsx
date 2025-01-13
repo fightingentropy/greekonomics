@@ -64,7 +64,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
         />
       </head>
-      <body className={`${inter.className} main-body bg-[rgb(26,26,26)] text-gray-50`}>
+      <body className={`${inter.className} main-body bg-[rgb(26,26,26)] text-gray-50`.trim()}>
         {children}
         <footer className="site-footer">
           <div className="container">
