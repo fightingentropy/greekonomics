@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import MainLayout from '@/app/components/MainLayout';
 import { type Article } from '@/utils/markdown';
 
@@ -61,9 +62,11 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
           <div className="flex items-center gap-3 mb-8">
             {article.author.image && (
               <div className="relative w-10 h-10 overflow-hidden rounded-full">
-                <img
+                <Image
                   src={article.author.image}
                   alt={article.author.name}
+                  fill
+                  sizes="40px"
                   className="object-cover"
                 />
               </div>

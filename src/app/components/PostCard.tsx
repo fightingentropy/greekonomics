@@ -32,6 +32,7 @@ export default function PostCard({ article }: PostCardProps) {
                   src={article.author.image}
                   alt={article.author.name}
                   fill
+                  sizes="40px"
                   className="object-cover"
                 />
               </div>
