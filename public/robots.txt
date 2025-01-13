@@ -1,0 +1,6 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location (add when you have one)
+# Sitemap: https://www.greekonomics.org/sitemap.xml
