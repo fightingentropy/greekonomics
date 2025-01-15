@@ -29,6 +29,10 @@ export const tweets: Tweet[] = [
     author: 'tier10k'
   },
   {
+    url: 'https://x.com/Pentosh1/status/1740042952108388405',
+    author: 'Pentosh1'
+  },
+  {
     url: 'https://x.com/CryptoCred/status/1879201483905749238',
     author: 'CryptoCred'
   },
