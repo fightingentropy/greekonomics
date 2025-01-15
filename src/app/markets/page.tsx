@@ -16,23 +16,27 @@ interface CoinData {
 export default function MarketsPage() {
   const [coins, setCoins] = useState<CoinData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCoins = async () => {
+    const fetchCryptoData = async () => {
       try {
-        const response = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=30&page=1&sparkline=false'
-        );
+        setIsLoading(true);
+        const response = await fetch('/api/coins');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
         const data = await response.json();
-        setCoins(data || []);
+        setCoins(data);
       } catch (error) {
-        console.error('Error fetching coins:', error);
+        console.error('Error fetching crypto data:', error);
+        setError('Failed to load cryptocurrency data');
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchCoins();
+    fetchCryptoData();
   }, []);
 
   const formatNumber = (num: number): string => {
@@ -54,6 +58,8 @@ export default function MarketsPage() {
             </div>
           ))}
         </div>
+      ) : error ? (
+        <div className="text-red-400">{error}</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {coins.map((coin) => (

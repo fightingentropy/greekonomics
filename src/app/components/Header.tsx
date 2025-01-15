@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { Search, LineChart } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useSearch } from '../context/SearchContext';
 
 interface HeaderProps {
-  onSearch?: (query: string) => void;
   showSearch?: boolean;
 }
 
-export default function Header({ onSearch, showSearch = true }: HeaderProps) {
+export default function Header({ showSearch = true }: HeaderProps) {
   const pathname = usePathname();
+  const { searchQuery, setSearchQuery } = useSearch();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-[rgb(26,26,26)]">
@@ -60,9 +61,10 @@ export default function Header({ onSearch, showSearch = true }: HeaderProps) {
               <div className="relative">
                 <input
                   type="text"
+                  value={searchQuery}
                   placeholder="Search Greekonomics"
                   className="w-full h-10 pl-10 pr-4 rounded-full bg-[rgb(26,26,26)] border border-gray-800 text-gray-200 placeholder-gray-400 focus:outline-none focus:border-gray-700 focus:ring-1 focus:ring-gray-700"
-                  onChange={(e) => onSearch?.(e.target.value)}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
               </div>

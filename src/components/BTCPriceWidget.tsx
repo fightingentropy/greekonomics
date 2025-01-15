@@ -54,23 +54,21 @@ export const CryptoPriceWidget = () => {
   useEffect(() => {
     const fetchHypePrice = async () => {
       try {
-        // Fetch HYPE price from CoinGecko
-        const geckoResponse = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=hyperliquid&order=market_cap_desc&per_page=1&sparkline=false&price_change_percentage=24h'
-        );
-        const data = await geckoResponse.json();
-        const hypeData = data[0];
-
-        if (hypeData) {
+        const response = await fetch('/api/hype');
+        if (!response.ok) {
+          throw new Error('Failed to fetch HYPE price');
+        }
+        const data = await response.json();
+        if (data && data[0]) {
           setCoins(prev => ({
             ...prev,
             hype: {
               ...prev.hype,
-              price: hypeData.current_price.toLocaleString('en-US', {
+              price: data[0].current_price.toLocaleString('en-US', {
                 style: 'currency',
                 currency: 'USD'
               }),
-              dailyChange: hypeData.price_change_percentage_24h,
+              dailyChange: data[0].price_change_percentage_24h,
               status: 'connected'
             }
           }));
