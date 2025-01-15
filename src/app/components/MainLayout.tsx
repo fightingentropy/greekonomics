@@ -23,7 +23,7 @@ export default function MainLayout({
         {!isArticlePage && (
           <CategoriesNav
             activeCategory={activeCategory}
-            onCategoryChange={onCategoryChange}
+            onCategoryChange={onCategoryChange || (() => {})}
           />
         )}
       </div>
