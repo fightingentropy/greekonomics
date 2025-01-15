@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { CryptoPriceWidget } from '../components/BTCPriceWidget'
-
-const inter = Inter({ subsets: ['latin'] })
+import RootLayoutClient from './components/RootLayoutClient'
 
 export const metadata: Metadata = {
   title: {
@@ -48,7 +46,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code', // Add this when you have it
+    google: 'your-google-verification-code',
   },
 }
 
@@ -64,16 +62,17 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
         />
+        <script 
+          async 
+          src="https://platform.twitter.com/widgets.js"
+          charSet="utf-8"
+          strategy="afterInteractive"
+        />
       </head>
-      <body className={`${inter.className} main-body bg-[rgb(26,26,26)] text-gray-50 relative`.trim()}>
+      <RootLayoutClient>
         <CryptoPriceWidget />
         {children}
-        <footer className="site-footer">
-          <div className="container">
-            <p>&copy; 2025 Greekonomics. All rights reserved.</p>
-          </div>
-        </footer>
-      </body>
+      </RootLayoutClient>
     </html>
   )
 }

@@ -7,7 +7,6 @@ import { getArticles } from './api/articles';
 import { type Article } from '@/utils/markdown';
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,12 +29,11 @@ export default function Home() {
 
   return (
     <MainLayout
-      onSearch={setSearchQuery}
       onCategoryChange={setActiveCategory}
     >
       <ArticleList
         initialArticles={articles}
-        searchQuery={searchQuery}
+        searchQuery=""
         activeCategory={activeCategory}
       />
     </MainLayout>

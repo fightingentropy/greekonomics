@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Header from './Header';
 import CategoriesNav from './CategoriesNav';
 
 interface MainLayoutProps {
@@ -23,8 +22,7 @@ export default function MainLayout({ children, onSearch, onCategoryChange }: Mai
 
   return (
     <div className="min-h-screen bg-[rgb(26,26,26)]">
-      <div className="sticky top-0 z-10 bg-[rgb(18,18,18)]">
-        <Header onSearch={onSearch} showSearch={!isArticlePage} />
+      <div className="sticky top-[80px] z-10 bg-[rgb(18,18,18)]">
         {!isArticlePage && (
           <CategoriesNav
             activeCategory={activeCategory}
@@ -32,7 +30,7 @@ export default function MainLayout({ children, onSearch, onCategoryChange }: Mai
           />
         )}
       </div>
-      <main className="pt-16">
+      <main>
         <div className="container mx-auto px-4">
           <div className="mt-16">
             {children}
