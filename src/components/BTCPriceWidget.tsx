@@ -9,44 +9,89 @@ interface CryptoPrice {
   status: 'connecting' | 'connected' | 'error';
 }
 
-const PriceDisplay = ({ symbol, price, priceChange, dailyChange, status, className = '', denominator = 'USDT' }:
-  { symbol: string; price: string; priceChange: number; dailyChange: number; status: string; className?: string; denominator?: string }) => (
-  <div className={`fixed right-4 bg-[#1e2029] p-4 rounded-lg shadow-lg border border-gray-700 z-50 text-white w-[200px] hidden lg:block ${className}`}>
-    <div className="flex flex-col items-start gap-1">
-      <div className="flex justify-between items-center w-full">
-        <h3 className="text-sm font-semibold text-gray-400">{symbol}/{denominator}</h3>
-        {status !== 'connected' && (
-          <div className={`text-sm ${status === 'error' ? 'text-yellow-500' : 'text-blue-500'}`}>
-            {status === 'error' ? '⚠️' : '🔄'}
-          </div>
-        )}
+interface CoinData {
+  symbol: string;
+  name: string;
+  price: string;
+  priceChange: number;
+  dailyChange: number;
+  status: 'connecting' | 'connected' | 'error';
+}
+
+const PriceDisplay = ({ symbol, name, data, className }: { symbol: string; name: string; data: CoinData; className: string }) => (
+  <div className={`fixed right-8 bg-[#1e2029] rounded-lg p-4 shadow-lg min-w-[200px] ${
+    data.status === 'error' ? 'border-red-500' : 'border-gray-700'
+  } border ${className} hidden lg:block z-50`}>
+    <div className="flex items-center justify-between">
+      <div>
+        <h3 className="text-lg font-semibold text-gray-100">{name}</h3>
+        <span className="text-sm text-gray-400">{symbol}</span>
       </div>
-      <div className="text-xl font-bold">{price}</div>
-      {priceChange !== 0 && (
-        <div className={`text-sm ${priceChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-          {priceChange >= 0 ? '↑' : '↓'} {Math.abs(priceChange).toFixed(2)}%
+      <div className="text-right">
+        <div className="text-lg font-semibold text-gray-100">
+          {data.price}
         </div>
-      )}
-      <div className={`text-sm ${dailyChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-        24h: {dailyChange >= 0 ? '+' : ''}{dailyChange.toFixed(2)}%
+        <div className={`text-sm ${data.dailyChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+          {data.dailyChange.toFixed(2)}%
+        </div>
       </div>
     </div>
+    {data.status === 'error' && (
+      <div className="text-xs text-red-400 mt-2">
+        Error connecting to price feed
+      </div>
+    )}
   </div>
 );
 
 export const CryptoPriceWidget = () => {
-  const [btcPrice, setBtcPrice] = useState<CryptoPrice>({ 
-    price: 'Loading...', 
-    priceChange: 0, 
-    dailyChange: 0, 
-    status: 'connecting' 
+  const [coins, setCoins] = useState<Record<string, CoinData>>({
+    btc: { symbol: 'BTC', name: 'Bitcoin', price: 'Loading...', priceChange: 0, dailyChange: 0, status: 'connecting' },
+    sol: { symbol: 'SOL', name: 'Solana', price: 'Loading...', priceChange: 0, dailyChange: 0, status: 'connecting' },
+    hype: { symbol: 'HYPE', name: 'Hyperliquid', price: 'Loading...', priceChange: 0, dailyChange: 0, status: 'connecting' }
   });
-  const [solPrice, setSolPrice] = useState<CryptoPrice>({ 
-    price: 'Loading...', 
-    priceChange: 0, 
-    dailyChange: 0, 
-    status: 'connecting' 
-  });
+
+  useEffect(() => {
+    const fetchHypePrice = async () => {
+      try {
+        // Fetch HYPE price from CoinGecko
+        const geckoResponse = await fetch(
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=hyperliquid&order=market_cap_desc&per_page=1&sparkline=false&price_change_percentage=24h'
+        );
+        const data = await geckoResponse.json();
+        const hypeData = data[0];
+
+        if (hypeData) {
+          setCoins(prev => ({
+            ...prev,
+            hype: {
+              ...prev.hype,
+              price: hypeData.current_price.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD'
+              }),
+              dailyChange: hypeData.price_change_percentage_24h,
+              status: 'connected'
+            }
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching HYPE price:', error);
+        setCoins(prev => ({
+          ...prev,
+          hype: { ...prev.hype, status: 'error' }
+        }));
+      }
+    };
+
+    // Initial fetch
+    fetchHypePrice();
+    
+    // Update HYPE price every 30 seconds
+    const interval = setInterval(fetchHypePrice, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const reconnectAttempts = useRef<{ [key: string]: number }>({});
   const activeConnections = useRef<{ [key: string]: WebSocket | null }>({});
@@ -136,26 +181,32 @@ export const CryptoPriceWidget = () => {
           
           if (stream === 'btcusdt@trade') {
             const currentPrice = parseFloat(data.p);
-            setBtcPrice(prev => ({
+            setCoins(prev => ({
               ...prev,
-              price: currentPrice.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD'
-              }),
-              priceChange: lastBtcPrice > 0 ? ((currentPrice - lastBtcPrice) / lastBtcPrice) * 100 : 0
+              btc: {
+                ...prev.btc,
+                price: currentPrice.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                }),
+                priceChange: lastBtcPrice > 0 ? ((currentPrice - lastBtcPrice) / lastBtcPrice) * 100 : 0
+              }
             }));
             lastBtcPrice = currentPrice;
           } else if (stream === 'btcusdt@ticker') {
-            setBtcPrice(prev => ({
+            setCoins(prev => ({
               ...prev,
-              dailyChange: parseFloat(data.P)
+              btc: {
+                ...prev.btc,
+                dailyChange: parseFloat(data.P)
+              }
             }));
           }
         } catch {
-          setBtcPrice(prev => ({ ...prev, status: 'error' }));
+          setCoins(prev => ({ ...prev, btc: { ...prev.btc, status: 'error' } }));
         }
       },
-      (status) => setBtcPrice(prev => ({ ...prev, status }))
+      (status) => setCoins(prev => ({ ...prev, btc: { ...prev.btc, status } }))
     );
     if (btcWs) sockets.push(btcWs);
 
@@ -168,26 +219,32 @@ export const CryptoPriceWidget = () => {
           
           if (stream === 'solusdt@trade') {
             const currentPrice = parseFloat(data.p);
-            setSolPrice(prev => ({
+            setCoins(prev => ({
               ...prev,
-              price: currentPrice.toLocaleString('en-US', {
-                style: 'currency',
-                currency: 'USD'
-              }),
-              priceChange: lastSolPrice > 0 ? ((currentPrice - lastSolPrice) / lastSolPrice) * 100 : 0
+              sol: {
+                ...prev.sol,
+                price: currentPrice.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD'
+                }),
+                priceChange: lastSolPrice > 0 ? ((currentPrice - lastSolPrice) / lastSolPrice) * 100 : 0
+              }
             }));
             lastSolPrice = currentPrice;
           } else if (stream === 'solusdt@ticker') {
-            setSolPrice(prev => ({
+            setCoins(prev => ({
               ...prev,
-              dailyChange: parseFloat(data.P)
+              sol: {
+                ...prev.sol,
+                dailyChange: parseFloat(data.P)
+              }
             }));
           }
         } catch {
-          setSolPrice(prev => ({ ...prev, status: 'error' }));
+          setCoins(prev => ({ ...prev, sol: { ...prev.sol, status: 'error' } }));
         }
       },
-      (status) => setSolPrice(prev => ({ ...prev, status }))
+      (status) => setCoins(prev => ({ ...prev, sol: { ...prev.sol, status } }))
     );
     if (solWs) sockets.push(solWs);
 
@@ -204,22 +261,9 @@ export const CryptoPriceWidget = () => {
 
   return (
     <>
-      <PriceDisplay
-        symbol="BTC"
-        price={btcPrice.price}
-        priceChange={btcPrice.priceChange}
-        dailyChange={btcPrice.dailyChange}
-        status={btcPrice.status}
-        className="top-[100px]"
-      />
-      <PriceDisplay
-        symbol="SOL"
-        price={solPrice.price}
-        priceChange={solPrice.priceChange}
-        dailyChange={solPrice.dailyChange}
-        status={solPrice.status}
-        className="top-[236px]"
-      />
+      <PriceDisplay symbol="BTC" name="Bitcoin" data={coins.btc} className="top-[200px]" />
+      <PriceDisplay symbol="SOL" name="Solana" data={coins.sol} className="top-[336px]" />
+      <PriceDisplay symbol="HYPE" name="Hyperliquid" data={coins.hype} className="top-[472px]" />
     </>
   );
 };
