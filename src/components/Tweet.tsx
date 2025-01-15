@@ -6,6 +6,16 @@ interface TweetProps {
   id: string;
 }
 
+declare global {
+  interface Window {
+    twttr?: {
+      widgets: {
+        load: (element?: HTMLElement) => void;
+      };
+    };
+  }
+}
+
 export const Tweet = ({ id }: TweetProps) => {
   const tweetRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
