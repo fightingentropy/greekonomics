@@ -24,6 +24,16 @@ export default function Header({ onSearch, showSearch = true }: HeaderProps) {
         <div className="flex items-center gap-6">
           {/* Navigation */}
           <Link 
+            href="/markets" 
+            className={`px-3 py-2 rounded-md text-sm font-medium ${
+              pathname === '/markets' 
+                ? 'text-white bg-gray-700' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+          >
+            Markets
+          </Link>
+          <Link 
             href="/tweets" 
             className={`px-3 py-2 rounded-md text-sm font-medium ${
               pathname === '/tweets' 

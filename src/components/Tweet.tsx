@@ -6,16 +6,6 @@ interface TweetProps {
   id: string;
 }
 
-declare global {
-  interface Window {
-    twttr?: {
-      widgets: {
-        load: (element?: HTMLElement) => Promise<void>;
-      };
-    };
-  }
-}
-
 export const Tweet = ({ id }: TweetProps) => {
   const tweetRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,20 +13,23 @@ export const Tweet = ({ id }: TweetProps) => {
   useEffect(() => {
     if (!tweetRef.current) return;
 
-    const tweetElement = document.createElement('blockquote');
-    tweetElement.className = 'twitter-tweet';
-    tweetElement.setAttribute('data-theme', 'dark');
-    const anchor = document.createElement('a');
-    anchor.href = `https://twitter.com/x/status/${id}`;
-    tweetElement.appendChild(anchor);
-    
-    tweetRef.current.innerHTML = '';
-    tweetRef.current.appendChild(tweetElement);
+    // Start with an empty blockquote
+    tweetRef.current.innerHTML = '<blockquote class="twitter-tweet" data-dnt="true" data-theme="dark"></blockquote>';
+
+    // Function to load the tweet
+    const loadTweet = () => {
+      if (tweetRef.current) {
+        const tweetContent = `<blockquote class="twitter-tweet" data-dnt="true" data-theme="dark">
+          <a href="https://twitter.com/0xuberM/status/${id}?ref_src=twsrc%5Etfw"></a>
+        </blockquote>`;
+        tweetRef.current.innerHTML = tweetContent;
+        window.twttr?.widgets.load(tweetRef.current);
+      }
+    };
 
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length > 0) {
-          // Check if the tweet iframe is loaded
           const iframe = tweetRef.current?.querySelector('iframe');
           if (iframe) {
             setIsLoading(false);
@@ -51,21 +44,28 @@ export const Tweet = ({ id }: TweetProps) => {
       subtree: true
     });
 
+    // Load the tweet when Twitter widget is ready
     if (window.twttr?.widgets) {
-      window.twttr.widgets.load(tweetRef.current);
+      loadTweet();
+    } else {
+      // Wait for Twitter widget to load
+      const script = document.createElement('script');
+      script.src = 'https://platform.twitter.com/widgets.js';
+      script.onload = loadTweet;
+      document.head.appendChild(script);
     }
 
     return () => observer.disconnect();
   }, [id]);
 
   return (
-    <div className="relative">
+    <div className="relative min-h-[200px] flex items-center justify-center">
       {isLoading && (
-        <div className="flex justify-center py-12">
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-6 h-6 border-2 border-gray-600 border-t-gray-400 rounded-full animate-spin" />
         </div>
       )}
-      <div ref={tweetRef} className={`flex justify-center my-4 ${isLoading ? 'invisible' : 'visible'}`} />
+      <div ref={tweetRef} className="w-full" />
     </div>
   );
 };
