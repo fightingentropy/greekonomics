@@ -2,6 +2,13 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
+    domains: [
+      'pbs.twimg.com',
+      'images.cryptocompare.com',
+      'images2.cryptocompare.com',
+      'images3.cryptocompare.com',
+      'resources.cryptocompare.com'
+    ],
     remotePatterns: [
       {
         protocol: 'http',

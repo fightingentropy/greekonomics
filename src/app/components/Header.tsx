@@ -43,6 +43,16 @@ export default function Header({ onSearch, showSearch = true }: HeaderProps) {
           >
             Tweets
           </Link>
+          <Link 
+            href="/news" 
+            className={`px-3 py-2 rounded-md text-sm font-medium ${
+              pathname === '/news' 
+                ? 'text-white bg-gray-700' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+          >
+            News
+          </Link>
 
           {/* Search */}
           {showSearch && (
