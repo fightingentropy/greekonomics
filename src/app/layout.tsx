@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import './globals.css'
 import { CryptoPriceWidget } from '../components/BTCPriceWidget'
 import RootLayoutClient from './components/RootLayoutClient'
@@ -62,11 +63,10 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
         />
-        <script 
-          async 
+        <Script 
           src="https://platform.twitter.com/widgets.js"
-          charSet="utf-8"
           strategy="afterInteractive"
+          charSet="utf-8"
         />
       </head>
       <RootLayoutClient>
