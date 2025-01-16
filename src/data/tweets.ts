@@ -47,5 +47,13 @@ export const tweets: Tweet[] = [
   {
     url: 'https://x.com/asxn_r/status/1876361546080846099',
     author: 'asxn_r'
+  },
+  {
+    url: 'https://x.com/TheiaResearch/status/1876618725547233417',
+    author: 'TheiaResearch'
+  },
+  {
+    url: 'https://x.com/EmperorBTC/status/1877821874442514507',
+    author: 'EmperorBTC'
   }
 ];
