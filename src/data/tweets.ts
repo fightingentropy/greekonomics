@@ -33,6 +33,10 @@ export const tweets: Tweet[] = [
     author: 'Pentosh1'
   },
   {
+    url: 'https://x.com/TFTC21/status/1879650271619616826',
+    author: 'TFTC21'
+  },
+  {
     url: 'https://x.com/CryptoCred/status/1879201483905749238',
     author: 'CryptoCred'
   },
