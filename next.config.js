@@ -2,18 +2,30 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: [
-      'pbs.twimg.com',
-      'images.cryptocompare.com',
-      'images2.cryptocompare.com',
-      'images3.cryptocompare.com',
-      'resources.cryptocompare.com'
-    ],
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'pbs.twimg.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.cryptocompare.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'images2.cryptocompare.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'images3.cryptocompare.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'resources.cryptocompare.com'
+      },
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '',
         pathname: '/**'
       }
     ]
