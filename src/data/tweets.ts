@@ -63,5 +63,9 @@ export const tweets: Tweet[] = [
   {
     url: 'https://x.com/mikeykremer/status/1878601513108636075',
     author: 'mikeykremer'
+  },
+  {
+    url: 'https://x.com/0xmidjet/status/1879641026497053009',
+    author: '0xmidjet'
   }
 ];
