@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 interface CryptoPrice {
   price: string;
@@ -44,7 +45,14 @@ const PriceDisplay = ({ symbol, name, data, className }: { symbol: string; name:
   </div>
 );
 
-export const CryptoPriceWidget = () => {
+export function CryptoPriceWidget() {
+  const pathname = usePathname();
+  
+  // Don't render on analytics or mindmap pages
+  if (pathname === '/analytics' || pathname === '/mindmap') {
+    return null;
+  }
+
   const [coins, setCoins] = useState<Record<string, CoinData>>({
     btc: { symbol: 'BTC', name: 'Bitcoin', price: 'Loading...', priceChange: 0, dailyChange: 0, status: 'connecting' },
     sol: { symbol: 'SOL', name: 'Solana', price: 'Loading...', priceChange: 0, dailyChange: 0, status: 'connecting' },

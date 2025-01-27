@@ -54,6 +54,16 @@ export default function Header({ showSearch = true }: HeaderProps) {
           >
             News
           </Link>
+          <Link 
+            href="/mindmap" 
+            className={`px-3 py-2 rounded-md text-sm font-medium ${
+              pathname === '/mindmap' 
+                ? 'text-white bg-gray-700' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+          >
+            Mindmap
+          </Link>
 
           {/* Search */}
           {showSearch && (
