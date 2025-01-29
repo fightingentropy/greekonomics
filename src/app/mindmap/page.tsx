@@ -19,15 +19,15 @@ const nodeTypes = {
   custom: CustomNode,
 };
 
-// Center position for the viewport
-const CENTER_X = window.innerWidth / 2;
-const CENTER_Y = window.innerHeight / 2;
+// Default center positions - will be updated on client side
+const DEFAULT_CENTER_X = 500;
+const DEFAULT_CENTER_Y = 300;
 
 const initialNodes: Node[] = [
   {
     id: 'investing',
     type: 'custom',
-    position: { x: CENTER_X - 110, y: CENTER_Y - 110 }, // Center the node accounting for its size
+    position: { x: DEFAULT_CENTER_X - 110, y: DEFAULT_CENTER_Y - 110 }, // Center the node with default values
     data: { 
       label: 'Investing',
       description: 'The art and science of growing wealth',
@@ -161,6 +161,17 @@ function MindMapContent() {
       window.removeEventListener('expandNode', handleExpandNode as EventListener);
     };
   }, [expandNode]);
+
+  useEffect(() => {
+    const CENTER_X = window.innerWidth / 2;
+    const CENTER_Y = window.innerHeight / 2;
+    setNodes((nds) => nds.map((node) => {
+      if (node.id === 'investing') {
+        return { ...node, position: { x: CENTER_X - 110, y: CENTER_Y - 110 } };
+      }
+      return node;
+    }));
+  }, [setNodes]);
 
   return (
     <div className="w-full h-screen bg-[rgb(20,20,24)]">
