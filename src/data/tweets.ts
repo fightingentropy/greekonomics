@@ -5,20 +5,12 @@ interface Tweet {
 
 export const tweets: Tweet[] = [
   {
-    url: 'https://twitter.com/0xuberM/status/1874562366907809939',
-    author: '0xuberM'
-  },
-  {
     url: 'https://x.com/chameleon_jeff/status/1879086717900386782',
     author: 'chameleon_jeff'
   },
   {
     url: 'https://x.com/trading_axe/status/1855128753053045122',
     author: 'trading_axe'
-  },
-  {
-    url: 'https://x.com/0xinvicta/status/1879529540223213857',
-    author: '0xinvicta'
   },
   {
     url: 'https://x.com/ercwl/status/1762873948847440333',
@@ -67,5 +59,13 @@ export const tweets: Tweet[] = [
   {
     url: 'https://x.com/0xmidjet/status/1879641026497053009',
     author: '0xmidjet'
+  },
+  {
+    url: 'https://twitter.com/0xuberM/status/1874562366907809939',
+    author: '0xuberM'
+  },
+   {
+    url: 'https://x.com/0xinvicta/status/1879529540223213857',
+    author: '0xinvicta'
   }
 ];
