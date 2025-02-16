@@ -7,12 +7,14 @@ interface MainLayoutProps {
   children: React.ReactNode;
   activeCategory?: string;
   onCategoryChange?: (category: string) => void;
+  showSearch?: boolean; 
 }
 
 export default function MainLayout({ 
   children, 
   activeCategory = 'all',
-  onCategoryChange 
+  onCategoryChange,
+  showSearch = true
 }: MainLayoutProps) {
   const pathname = usePathname();
   const isArticlePage = pathname.startsWith('/articles/');
@@ -23,11 +25,11 @@ export default function MainLayout({
         {!isArticlePage && (
           <CategoriesNav
             activeCategory={activeCategory}
-            onCategoryChange={onCategoryChange || (() => {})}
+            onCategoryChange={onCategoryChange!}
           />
         )}
       </div>
-      <main>
+      <main className="max-w-4xl mx-auto px-4 py-6">
         <div className="container mx-auto px-4">
           <div className="mt-16">
             {children}
