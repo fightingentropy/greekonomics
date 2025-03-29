@@ -2,55 +2,80 @@
 
 import React, { memo } from 'react';
 import { Handle, Position } from 'reactflow';
+import Link from 'next/link';
 
 function CustomNode({ data, id }: { data: any; id: string }) {
-  const handleClick = () => {
+  const handleNodeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (data.children) {
       const event = new CustomEvent('expandNode', { detail: id });
       window.dispatchEvent(event);
     }
   };
 
-  const size = data.children ? 220 : 180;
+  const handleSubcategoryClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Navigation will be handled by the Link component
+  };
+
+  // Map category IDs to URL parameters for filtering articles
+  const categoryMap: {[key: string]: string} = {
+    'investing': 'investing',
+    'stocks': 'investing',
+    'crypto': 'crypto',
+    'realestate': 'investing',
+    'bonds': 'investing',
+    'alternatives': 'investing',
+    'personal-finance': 'personal-finance',
+    'budgeting': 'personal-finance',
+    'retirement': 'personal-finance',
+    'insurance': 'personal-finance',
+    'taxes': 'personal-finance',
+    'debt': 'personal-finance',
+    'bitcoin': 'crypto',
+    'ethereum': 'crypto',
+    'defi': 'crypto',
+    'nfts': 'crypto'
+  };
+
+  // Get category for URL from node ID (removing parent prefix if present)
+  const getCategoryParam = () => {
+    const baseId = id.includes('-') ? id.split('-').pop() : id;
+    return baseId ? categoryMap[baseId] || 'all' : 'all';
+  };
 
   return (
     <div 
-      onClick={handleClick}
-      style={{
-        width: `${size}px`,
-        height: `${size}px`,
-      }}
-      className={`flex items-center justify-center rounded-full shadow-lg border border-gray-700 
-        bg-[rgb(26,26,26)] cursor-pointer transition-all duration-300 hover:shadow-xl 
-        hover:scale-105 relative overflow-hidden group
-        ${data.children ? 'hover:bg-indigo-900/20' : 'hover:bg-gray-800/50'}`}
+      onClick={handleNodeClick}
+      className={`
+        flex flex-col items-center justify-center
+        w-[220px] h-[220px]
+        rounded-full shadow-lg border border-gray-700 
+        bg-[rgb(26,26,26)] cursor-pointer 
+        transition-all duration-300 
+        hover:shadow-xl hover:scale-105 
+        ${data.children ? 'hover:bg-indigo-900/20' : 'hover:bg-gray-800/50'}
+      `}
     >
       <Handle type="target" position={Position.Top} className="!bg-gray-700" />
       
-      <div className="text-center p-4">
-        <h2 className="text-xl font-semibold text-gray-100 mb-2">{data.label}</h2>
-        <p className="text-sm text-gray-400 mb-2 line-clamp-2">{data.description}</p>
+      <div className="text-center p-5 w-full max-w-[180px]">
+        <h2 className="text-xl font-semibold text-gray-100 mb-3">{data.label}</h2>
+        <p className="text-sm text-gray-400 mb-4 line-clamp-2">{data.description}</p>
         
-        {data.topics && (
-          <div className="absolute inset-0 bg-[rgb(26,26,26)] opacity-0 group-hover:opacity-100 
-            transition-opacity duration-300 flex items-center justify-center">
-            <div className="flex flex-wrap gap-2 justify-center content-center p-4">
-              {data.topics.map((topic: string) => (
-                <span 
-                  key={topic}
-                  className="text-xs px-2 py-1 rounded-full bg-gray-800 text-gray-300 whitespace-nowrap"
-                >
-                  {topic}
-                </span>
-              ))}
-            </div>
-          </div>
+        {data.children && !data.expanded && (
+          <div className="mt-3 text-sm text-indigo-400">Click to explore</div>
         )}
         
-        {data.children && (
-          <div className="mt-2 text-sm text-indigo-400">
-            {data.expanded ? '−' : '+'}
-          </div>
+        {!data.children && (
+          <Link 
+            href={`/?category=${getCategoryParam()}`}
+            onClick={handleSubcategoryClick}
+            className="mt-3 px-3 py-1 text-xs text-indigo-300 border border-indigo-900/50 
+              rounded-full bg-indigo-900/20 hover:bg-indigo-800/30 inline-block transition-colors"
+          >
+            View Articles
+          </Link>
         )}
       </div>
 
